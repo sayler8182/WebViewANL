@@ -11,6 +11,7 @@ import WebKit
 class ViewController: UIViewController {
 
     var webView: WKWebView!
+    let mockServer: MockServer = MockServer(port: 5013)
 
     lazy var documentPath: URL = {
         let fileManager = FileManager.default
@@ -70,7 +71,16 @@ class ViewController: UIViewController {
         webView.uiDelegate = self
         view.addSubview(webView)
         saveFiles()
-        loadContent()
+
+        // load file://
+        // loadContent()
+
+        // start mock server
+        do {
+            try mockServer.start()
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
     }
 
     func saveFiles() {
